@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="tr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Anasayfa</title>
+    <link rel="stylesheet" th:href="@{style.css}">
+</head>
+<body>
+<header class="top-bar">
+    <h1>Envanter Yönetim Sistemi</h1>
+    <a th:href="@{/login}" class="logout-btn">Çıkış</a>
+</header>
+
+<main class="grid-menu">
+    <a th:href="@{/products}"      class="menu-card">Ürün Ekle</a>
+    <a th:href="@{/purchases}"     class="menu-card">Alınacak Ürün Ekle</a>
+    <a th:href="@{/sales}"         class="menu-card">Satılmış Ürün Ekle</a>
+    <a th:href="@{/categories}"    class="menu-card">Kategori Ekle</a>
+</main>
+<script>
+    window.onpopstate = function () {
+        window.location.href = '/home';
+    };
+</script>
+
+</body>
+</html>

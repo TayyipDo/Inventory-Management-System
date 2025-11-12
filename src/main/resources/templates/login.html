@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="tr" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Giriş Yap</title>
+  <link rel="stylesheet" th:href="@{style.css}">
+</head>
+<body class="auth-page">
+<div class="auth-card">
+  <h2>Giriş Yap</h2>
+
+  <p th:if="${message}" class="alert" th:text="${message}"></p>
+
+  <form th:action="@{/login}" method="post" th:object="${user}">
+    <input type="text" th:field="*{username}" placeholder="Kullanıcı Adı" required>
+    <input type="password" th:field="*{password}" placeholder="Şifre" required>
+    <button type="submit" class="btn-primary">Giriş Yap</button>
+  </form>
+
+  <p class="switch-link">Hesabın yok mu?
+    <a th:href="@{/register}">Kayıt Ol</a>
+  </p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Alınacak Ürünler</title>
+    <link rel="stylesheet" th:href="@{style.css}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            padding: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #964b00;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        form input, form select, form button {
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 15px;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f5f5f5;
+            font-weight: bold;
+        }
+
+        .action-buttons a {
+            margin-right: 10px;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background-color: #1f4eeb;
+            color: white;
+            padding: 8px 16px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .btn-primary:hover {
+            background-color: #163dcf;
+        }
+
+    </style>
+</head>
+<body>
+<a href="/home" style="margin-left: 20px; color: blue;">← Anasayfaya Dön</a>
+
+<main class="container">
+
+    <div class="card">
+        <h2>Yeni Alınacak Ürün Ekle</h2>
+        <form th:action="@{/purchases/add}" method="post" th:object="${incomingProduct}" autocomplete="off">
+            <input type="text" th:field="*{name}" placeholder="Ürün Adı" required autocomplete="off">
+            <input type="text" th:field="*{description}" placeholder="Açıklama" required autocomplete="off">
+            <input type="number" th:field="*{quantity}" placeholder="Miktar" required autocomplete="off">
+            <input type="number" step="0.01" th:field="*{price}" placeholder="Fiyat" required autocomplete="off">
+
+            <select th:field="*{category}" required>
+                <option value="" disabled selected>Kategori Seç</option>
+                <option th:each="cat : ${categories}" th:value="${cat.id}" th:text="${cat.name}"></option>
+            </select>
+
+            <button type="submit" class="btn-primary">Ekle</button>
+        </form>
+    </div>
+
+    <div style="text-align:right; margin-bottom:10px;">
+        <a th:href="@{/purchases/export/pdf}" class="btn-primary" style="margin-right: 10px;">PDF İndir</a>
+        <a th:href="@{/purchases/export/excel}" class="btn-primary">Excel İndir</a>
+    </div>
+
+    <div class="card">
+        <h2>Alınacak Ürün Listesi</h2>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                <tr>
+
+                    <th>Ad</th>
+                    <th>Açıklama</th>
+                    <th>Miktar</th>
+                    <th>Fiyat</th>
+                    <th>Kategori</th>
+                    <th>Durum</th>
+                    <th>İşlemler</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="p : ${purchases}">
+                    <td th:text="${p.name}"></td>
+                    <td th:text="${p.description}"></td>
+                    <td th:text="${p.quantity}"></td>
+                    <td th:text="${p.price}"></td>
+                    <td th:text="${p.category.name}"></td>
+                    <td>
+                        <span th:text="${p.purchased} ? 'Alındı' : 'Bekliyor'"
+                              th:style="${p.purchased} ? 'color:green;' : 'color:orange;'"></span>
+                    </td>
+                    <td class="action-buttons">
+                        <a th:if="!${p.purchased}" th:href="@{/purchases/mark-purchased/{id}(id=${p.id})}" style="color:blue;">Alındı olarak işaretle</a>
+                        <a th:href="@{/purchases/delete/{id}(id=${p.id})}" style="color:red;">Sil</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</main>
+<script>
+    window.addEventListener("popstate", function () {
+        window.location.href = "/home";
+    });
+</script>
+
+
+</body>
+</html>

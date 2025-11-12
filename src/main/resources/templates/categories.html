@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Kategori Yönetimi</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            padding: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #964b00;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        form input, form button {
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 15px;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f5f5f5;
+            font-weight: bold;
+        }
+
+        .action-buttons a {
+            margin-right: 10px;
+            color: red;
+            text-decoration: none;
+        }
+
+        a.back-link {
+            margin-left: 20px;
+            color: blue;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+<a href="/home" class="back-link">← Anasayfaya Dön</a>
+
+<main class="container">
+    <div class="card">
+        <h2>Yeni Kategori Ekle</h2>
+        <form th:action="@{/categories/add}" method="post">
+        <input type="text" name="name" placeholder="Kategori Adı" required>
+            <button type="submit">Ekle</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h2>Mevcut Kategoriler</h2>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                <tr>
+                    <th>Adı</th>
+                    <th>İşlemler</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="category : ${categories}">
+                    <td th:text="${category.name}"></td>
+                    <td class="action-buttons">
+                        <a th:href="@{'/categories/delete/' + ${category.id}}">Sil</a>
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+<script>
+    window.addEventListener("popstate", function () {
+        window.location.href = "/home";
+    });
+</script>
+
+</body>
+</html>

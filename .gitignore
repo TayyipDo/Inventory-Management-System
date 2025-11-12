@@ -1,0 +1,22 @@
+# Compiled class files
+/target/
+*.class
+
+# Log files
+*.log
+
+# IDE files
+.idea/
+.project
+.classpath
+.settings/
+*.iml
+*.ipr
+*.iws
+
+# Maven
+.mvn/
+
+# Secrets - GİZLİ BİLGİLER
+# Veritabanı şifrenizi içeren bu dosyayı GÖNDERMEYİN
+# src/main/resources/application.properties

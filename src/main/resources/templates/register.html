@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="tr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Kayıt Ol</title>
+    <link rel="stylesheet" th:href="@{style.css}">
+</head>
+<body class="auth-page">
+<div class="auth-card">
+    <h2>Yeni Hesap Oluştur</h2>
+
+    <p th:if="${message}" class="alert" th:text="${message}"></p>
+
+    <form th:action="@{/register}" method="post" th:object="${user}">
+        <input type="text" th:field="*{fullName}" placeholder="Ad Soyad" required>
+        <input type="text" th:field="*{username}" placeholder="Kullanıcı Adı" required>
+        <input type="email" th:field="*{email}" placeholder="E-posta" required>
+        <input type="password" th:field="*{password}" placeholder="Şifre" required>
+        <button type="submit" class="btn-primary">Kayıt Ol</button>
+    </form>
+
+    <p class="switch-link">Hesabın var mı?
+        <a th:href="@{/login}">Giriş Yap</a>
+    </p>
+</div>
+
+
+</body>
+</html>

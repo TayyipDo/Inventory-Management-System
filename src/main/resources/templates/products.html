@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Ürün Yönetimi</title>
+    <link rel="stylesheet" th:href="@{style.css}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            padding: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #964b00;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        form input, form select, form button {
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 15px;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f5f5f5;
+            font-weight: bold;
+        }
+
+        .action-buttons a {
+            margin-right: 10px;
+            color: red;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<a href="/home" style="margin-left: 20px; color: blue;">← Anasayfaya Dön</a>
+
+<main class="container">
+
+    <div class="card">
+        <h2>Yeni Ürün Ekle</h2>
+        <form th:action="@{/products/add}" method="post" autocomplete="off">
+            <input type="text" name="name" placeholder="Ürün Adı" required autocomplete="off">
+            <input type="text" name="description" placeholder="Açıklama" required autocomplete="off">
+            <input type="number" name="quantity" placeholder="Miktar" required autocomplete="off">
+            <input type="number" name="price" placeholder="Fiyat" step="0.01" required autocomplete="off">
+            <select name="category" required>
+                <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+            </select>
+            <button type="submit">Ekle</button>
+        </form>
+    </div>
+    <div style="text-align:right; margin-bottom:10px;">
+        <a th:href="@{/products/export/pdf}" class="btn-primary" style="padding: 8px 16px; margin-right: 10px;">PDF İndir</a>
+        <a th:href="@{/products/export/excel}" class="btn-primary" style="padding: 8px 16px;">Excel İndir</a>
+    </div>
+    <div class="card">
+        <h2>Mevcut Ürünler</h2>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                <tr>
+                    <th>Ad</th>
+                    <th>Açıklama</th>
+                    <th>Miktar</th>
+                    <th>Fiyat</th>
+                    <th>Kategori</th>
+                    <th>İşlemler</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="product : ${products}">
+                    <td th:text="${product.name}"></td>
+                    <td th:text="${product.description}"></td>
+                    <td th:text="${product.quantity}"></td>
+                    <td th:text="${product.price}"></td>
+                    <td th:text="${product.category.name}"></td>
+                    <td class="action-buttons">
+                        <a th:href="@{'/products/delete/' + ${product.id}}">Sil</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+<script>
+    window.addEventListener("popstate", function () {
+        window.location.href = "/home";
+    });
+</script>
+
+
+</body>
+</html>
